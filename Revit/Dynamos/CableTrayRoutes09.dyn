@@ -1,0 +1,623 @@
+{
+  "Uuid": "3c9d0464-8643-5ffe-96e5-ab1769818209",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "CableTrayRoutes09",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DraftingView": {
+        "Key": "Revit.Elements.Views.DraftingView",
+        "Value": "RevitNodes.dll"
+      },
+      "SketchPlane": {
+        "Key": "Revit.Elements.SketchPlane",
+        "Value": "RevitNodes.dll"
+      },
+      "Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Family": {
+        "Key": "Revit.Elements.Family",
+        "Value": "RevitNodes.dll"
+      },
+      "Element": {
+        "Key": "Revit.Elements.Element",
+        "Value": "RevitNodes.dll"
+      },
+      "List.Parameters": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSOffice.Data.ExportExcel@string,string,int,int,var[][],bool",
+      "Id": "f5f7d2a2d2cf4d0d9a876c760c52aba2",
+      "Inputs": [
+        {
+          "Id": "899622d4c8a84fbf884f5c5c0e884a94",
+          "Name": "filePath",
+          "Description": "File path to the Microsoft Excel spreadsheet.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "baa562b47a0943b0a8f81d776e8b23d2",
+          "Name": "sheetName",
+          "Description": "Name of the workseet to write data to.\n\nstring",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "3ebba9b3bffa43a197299365397cb82d",
+          "Name": "startRow",
+          "Description": "Start row for writing data. Enter 0 for Row 1, 1 for Row 2, etc.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "853e021cac564279b2487318fb992e0f",
+          "Name": "startCol",
+          "Description": "Start column for writing data. Enter 0 for Column A, 1 for Column B, etc.\n\nint",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a2e23ddaa97149f5942122e78700fa68",
+          "Name": "data",
+          "Description": "Data to write to the spreadsheet.\n\nvar[][]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "a29e185d46794cfc96c3e4b5261d51ac",
+          "Name": "overWrite",
+          "Description": "bool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2473a7de199a47df902ffde628d16866",
+          "Name": "data",
+          "Description": "Data written to the spreadsheet.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Write data to a Microsoft Excel spreadsheet. Data is written by row with sublists to be written in successive rows. Rows and columns are zero-indexed; for example, the value in the data list at [0,0] will be written to cell A1. Null values and empty lists are written to Excel as empty cells. This node requires Microsoft Excel to be installed.\n\nData.ExportExcel (filePath: string, sheetName: string, startRow: int, startCol: int, data: var[][], overWrite: bool = false): var[][]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"C:\\\\Revit\\\\Excel\\\\RevitMacros02.xlsx\";\n\"Data\";\n0;\n1;",
+      "Id": "53b7a70991b045e8be7f2d38f12ab672",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "eb66ed0bb30c4e7c99b6272c8034a1a1",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "0d9d5cbaddcd418da6f0ab1fe46cc8d3",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "daab78737fb84c1696b2f73f75a0355a",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "d3668eb1f8c14074aeaf3f42f2a28b02",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\n\r\nfrom Autodesk.Revit.DB import *\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n# Function to get the coordinates of connection points\r\ndef get_tray_connectors(elem):\r\n\tconnector_manager = elem.ConnectorManager\r\n\ttypeData = get_cable_tray_type(elem)\r\n\tparams =get_cable_tray_params(elem)\r\n\tparamData = [params[\"Length\"]*f,params[\"Width\"]*f,params[\"Height\"]*f]\r\n\tcustomData = [params[\"Mark\"] ,params[\"Service Type\"]]\r\n\r\n\tconnection_points = [elem.Id]\r\n\tconnection_points.extend(customData)\r\n\tconnection_points.extend(typeData)\r\n\tconnection_points.extend(paramData)\r\n\t\t\r\n\tfor cn in connector_manager.Connectors:\r\n\t\tconnection_points.extend([cn.Origin.X*f,cn.Origin.Y*f,cn.Origin.Z*f])\r\n\r\n\treturn [connection_points]\t\r\n\r\ndef get_fitting_connectors(elem):\r\n\ttypeData = get_cable_tray_type(elem)\r\n\tparams =get_cable_tray_params(elem)\r\n\t#paramData = [params[\"Length\"]*f,params[\"Width\"]*f,params[\"Height\"]*f]\r\n\tparamData =['','','']\r\n\tcustomData = [params[\"Mark\"] ,params[\"Service Type\"]]\r\n\r\n\t\r\n\tconnection_points = [elem.Id]\r\n\tconnection_points.extend(customData)\r\n\tconnection_points.extend(typeData)\r\n\tconnection_points.extend(paramData)\r\n\r\n\tif hasattr(elem, 'MEPModel') and elem.MEPModel:\r\n\t\tconnector_manager = elem.MEPModel.ConnectorManager\r\n\t\tfor cn in connector_manager.Connectors:\r\n\t\t\tconnection_points.extend([cn.Origin.X*f,cn.Origin.Y*f,cn.Origin.Z*f])\r\n\treturn [connection_points]\r\n\r\ndef get_parameter_value(element, built_in_param):\r\n\tparam = element.get_Parameter(built_in_param)\r\n\tif param:\r\n\t\treturn param.AsString() or param.AsDouble() or param.AsInteger()\r\n\treturn None\r\n\r\ndef get_cable_tray_params(cable_tray):\r\n\tparams = {}\r\n\tfor param in cable_tray.Parameters:\r\n\t\tparam_name = param.Definition.Name\r\n\t\tif param.StorageType == StorageType.String:\r\n\t\t\tparam_value = param.AsString()\r\n\t\telif param.StorageType == StorageType.Double:\r\n\t\t\tparam_value = param.AsDouble()\r\n\t\telif param.StorageType == StorageType.Integer:\r\n\t\t\tparam_value = param.AsInteger()\r\n\t\telif param.StorageType == StorageType.ElementId:\r\n\t\t\tparam_value = param.AsElementId().IntegerValue\r\n\t\telse:\r\n\t\t\tparam_value = None\r\n\t\tparams[param_name] = param_value\r\n\treturn params\r\n\r\ndef get_cable_tray_type(element):\r\n\t# Get the type ID of the element\r\n\ttype_id = element.GetTypeId()\r\n\t# Get the element type using the type ID\r\n\telement_type = doc.GetElement(type_id)\r\n\t# Get the type name\r\n\ttype_name = element_type.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()\r\n\tfamily_name = element_type.get_Parameter(BuiltInParameter.ALL_MODEL_FAMILY_NAME).AsString()\r\n\r\n\treturn  [type_id, type_name, family_name]\r\n\r\nf = 25.4*12\r\n\r\n# Get the current Revit document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Collect all CableTray elements\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTray).WhereElementIsNotElementType().ToElements()\r\ncable_tray_fittings = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTrayFitting).WhereElementIsNotElementType().ToElements()\r\n\r\nall_connection_points = [['Id', 'Mark','Service Type', 'TypeId', 'TypeName', 'FamilyName', 'Length', 'Width', 'Height','X1','Y1','Z1','X2','Y2','Z2','X3','Y3','Z3','X4','Y4','Z4']]\r\n\r\nfor tray in cable_trays:\r\n\tconnection_points = get_tray_connectors(tray)\r\n\tall_connection_points.extend(connection_points)\r\n\r\n\r\nfor tray in cable_tray_fittings:\r\n\tconnection_points = get_fitting_connectors(tray)\r\n\tall_connection_points.extend(connection_points)\r\n\r\n\r\nOUT = all_connection_points\r\n\r\n",
+      "VariableInputPorts": true,
+      "Id": "e74016ea645b42ef98a0af730406838b",
+      "Inputs": [
+        {
+          "Id": "07ba6abfb6734cab8f6c2cfc99757ce8",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "cc76e05476ef4de9896b6f1e490b06b4",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "479caff8e00b4a3c823d9cced2b2ef98",
+      "Inputs": [
+        {
+          "Id": "432d97deb7fc4bdd92398ea567485225",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "9697aa4a6781413898f26236aa00e8d3",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
+      "NodeType": "NumberInputNode",
+      "NumberType": "Integer",
+      "InputValue": 41,
+      "MaximumValue": 100,
+      "MinimumValue": 0,
+      "StepValue": 1,
+      "Id": "0c89826c94f34e529ed18a0726bc793a",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "0f4b7a864dbe4bc0abf0228be39aba9f",
+          "Name": "",
+          "Description": "Int32",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "A slider that produces integer values."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\n\r\nfrom Autodesk.Revit.DB import *\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n# Get the current Revit document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Collect all CableTray elements\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTrayFitting).WhereElementIsNotElementType().ToElements()\r\n\r\n# Function to get parameters of a cable tray\r\ndef get_cable_tray_params(cable_tray):\r\n\tparams = {}\r\n\tfor param in cable_tray.Parameters:\r\n\t\tparam_name = param.Definition.Name\r\n\t\tif param.StorageType == StorageType.String:\r\n\t\t\tparam_value = param.AsString()\r\n\t\telif param.StorageType == StorageType.Double:\r\n\t\t\tparam_value = param.AsDouble()\r\n\t\telif param.StorageType == StorageType.Integer:\r\n\t\t\tparam_value = param.AsInteger()\r\n\t\telif param.StorageType == StorageType.ElementId:\r\n\t\t\tparam_value = param.AsElementId().IntegerValue\r\n\t\telse:\r\n\t\t\tparam_value = None\r\n\t\tparams[param_name] = param_value\r\n\treturn params\r\n\r\n# Get parameters for all cable trays\r\nall_cable_tray_params = []\r\nfor cable_tray in cable_trays:\r\n\ttray_params = get_cable_tray_params(cable_tray)\r\n\tall_cable_tray_params.append(tray_params)\r\n\r\n# Output the list of parameters for all cable trays\r\nOUT = all_cable_tray_params\r\n",
+      "VariableInputPorts": true,
+      "Id": "9aa98cf2ca894236b8a8138b19b63a78",
+      "Inputs": [
+        {
+          "Id": "b2f31063abfc4ef9ac85f255dc6a5935",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "22843c506ca14ce699b46e8dfcf9e9fd",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "80f89072d3794f399672dfc80f371d03",
+      "Inputs": [
+        {
+          "Id": "789327abfe87465fa348f249aab3894a",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "8e722e8166bc4e5cb45013bc3b32d94f",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom Autodesk.Revit.DB import FilteredElementCollector, BuiltInCategory, ElementType\r\n\r\n# Get the active document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\ntray_types = FilteredElementCollector(doc).OfClass(ElementType).OfCategory(BuiltInCategory.OST_CableTray).ToElements()\r\n\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTray).WhereElementIsNotElementType().ToElements()\r\n\r\n\r\n# Output the cable tray types\r\nOUT = cable_trays\r\n",
+      "VariableInputPorts": true,
+      "Id": "b55f80d13d5148d1a545c3dc09731633",
+      "Inputs": [
+        {
+          "Id": "7f119f39da514346b2ab22e5f61a7272",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "7a25cd02d1c442c79cf8a4e6c91577ee",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\n\r\nfrom Autodesk.Revit.DB import *\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\n# Get the current Revit document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Collect all CableTray elements\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTray).WhereElementIsNotElementType().ToElements()\r\n#cable_tray_fittings = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTrayFitting).WhereElementIsNotElementType().ToElements()\r\n#tray_types = FilteredElementCollector(doc).OfClass(ElementType).OfCategory(BuiltInCategory.OST_CableTray).ToElements()\r\n\r\nitemCol = cable_trays\r\n\r\nresult = []\r\n\r\nfor item in itemCol:\r\n\tfor par in item.Parameters:\r\n\t\tresult.append(str(par))\r\n\r\nOUT = result\r\n\r\n",
+      "VariableInputPorts": true,
+      "Id": "067c3066ad4d41079d7ff93b71b41dc0",
+      "Inputs": [
+        {
+          "Id": "87e21093a6654332a2a6d0e099225ebe",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "2b08c8f3365c4f2785ea3683e4878ac1",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "Data6[\"Longitud de bandeja\"]*25.4*12;",
+      "Id": "97b33c194e7c421c92c55ab62f148721",
+      "Inputs": [
+        {
+          "Id": "65038fac7cec49528ae52fd9e8d2f4df",
+          "Name": "Data6",
+          "Description": "Data6",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "42f8b36d59314df1814a97a14a775784",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "3b0a6fa570d64ceba78a977917266e2e",
+      "Inputs": [
+        {
+          "Id": "0e7df9e39e8f4ae6938f72b0992598f7",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "ec3648fcfba54657a40ed37418f6f139",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "eb66ed0bb30c4e7c99b6272c8034a1a1",
+      "End": "899622d4c8a84fbf884f5c5c0e884a94",
+      "Id": "cab63aab234b4bd1b11b42844126f51f"
+    },
+    {
+      "Start": "0d9d5cbaddcd418da6f0ab1fe46cc8d3",
+      "End": "baa562b47a0943b0a8f81d776e8b23d2",
+      "Id": "895c0db0058e4e6886ae26f2cb2adfce"
+    },
+    {
+      "Start": "daab78737fb84c1696b2f73f75a0355a",
+      "End": "3ebba9b3bffa43a197299365397cb82d",
+      "Id": "b69c828d03c442db950e01d735d8b088"
+    },
+    {
+      "Start": "d3668eb1f8c14074aeaf3f42f2a28b02",
+      "End": "853e021cac564279b2487318fb992e0f",
+      "Id": "0d83e8c7a5174fdbb7b3a66d406568ea"
+    },
+    {
+      "Start": "d3668eb1f8c14074aeaf3f42f2a28b02",
+      "End": "a29e185d46794cfc96c3e4b5261d51ac",
+      "Id": "02a2b38df8e64b6d8f26920e032f8db6"
+    },
+    {
+      "Start": "cc76e05476ef4de9896b6f1e490b06b4",
+      "End": "432d97deb7fc4bdd92398ea567485225",
+      "Id": "53809109ad954a4fa7bb9d9ab9629c4b"
+    },
+    {
+      "Start": "9697aa4a6781413898f26236aa00e8d3",
+      "End": "a2e23ddaa97149f5942122e78700fa68",
+      "Id": "585095a51bf94a8e98904e3fd19a02ac"
+    },
+    {
+      "Start": "0f4b7a864dbe4bc0abf0228be39aba9f",
+      "End": "07ba6abfb6734cab8f6c2cfc99757ce8",
+      "Id": "6d5d266c488e4e0f9d6adbdde90cdcae"
+    },
+    {
+      "Start": "22843c506ca14ce699b46e8dfcf9e9fd",
+      "End": "0e7df9e39e8f4ae6938f72b0992598f7",
+      "Id": "4535d6e0f69646748bd6fd4bf0b2d8a2"
+    },
+    {
+      "Start": "42f8b36d59314df1814a97a14a775784",
+      "End": "789327abfe87465fa348f249aab3894a",
+      "Id": "05fd9c2537014c7592fc842ee262ef8d"
+    },
+    {
+      "Start": "ec3648fcfba54657a40ed37418f6f139",
+      "End": "65038fac7cec49528ae52fd9e8d2f4df",
+      "Id": "6f795e45916f4eeeb5575ca804e4c3e7"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "100"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "Id": "f5f7d2a2d2cf4d0d9a876c760c52aba2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Data.ExportExcel",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -6799.4260394574694,
+        "Y": -1223.0536769607779
+      },
+      {
+        "Id": "53b7a70991b045e8be7f2d38f12ab672",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Code Block",
+        "ShowGeometry": false,
+        "Excluded": false,
+        "X": -7614.6776500194974,
+        "Y": -1187.0721358570163
+      },
+      {
+        "Id": "e74016ea645b42ef98a0af730406838b",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Connection Points",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7475.0318194944175,
+        "Y": -1471.1712903641728
+      },
+      {
+        "Id": "479caff8e00b4a3c823d9cced2b2ef98",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Watch",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7196.5816244794269,
+        "Y": -1553.4854784653614
+      },
+      {
+        "Id": "0c89826c94f34e529ed18a0726bc793a",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Integer Slider",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7884.7558601541805,
+        "Y": -1470.297454672175
+      },
+      {
+        "Id": "9aa98cf2ca894236b8a8138b19b63a78",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "CableTrayParams",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -8148.79611904312,
+        "Y": -1988.0637558542883
+      },
+      {
+        "Id": "80f89072d3794f399672dfc80f371d03",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Watch",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7228.0439798273183,
+        "Y": -1986.5936556662132
+      },
+      {
+        "Id": "b55f80d13d5148d1a545c3dc09731633",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "TrayTypes",
+        "ShowGeometry": true,
+        "Excluded": true,
+        "X": -8434.0095257767316,
+        "Y": -1800.2610723690523
+      },
+      {
+        "Id": "067c3066ad4d41079d7ff93b71b41dc0",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Connection Points",
+        "ShowGeometry": true,
+        "Excluded": true,
+        "X": -8437.8394686083884,
+        "Y": -1682.9458190812577
+      },
+      {
+        "Id": "97b33c194e7c421c92c55ab62f148721",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Code Block",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7657.8061227435564,
+        "Y": -1983.9157485833382
+      },
+      {
+        "Id": "3b0a6fa570d64ceba78a977917266e2e",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Name": "Watch",
+        "ShowGeometry": true,
+        "Excluded": false,
+        "X": -7984.2883378829174,
+        "Y": -1987.0058538039414
+      }
+    ],
+    "Annotations": [],
+    "X": 11112.762040476056,
+    "Y": 2218.8519432313674,
+    "Zoom": 1.3510848110600793
+  }
+}
