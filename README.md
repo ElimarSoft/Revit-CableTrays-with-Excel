@@ -31,3 +31,6 @@ Enter the coordinates of the tray routes in an Excel sheet.
 Develop a script (e.g., using Python and Revit API) to read the Excel data and create the cable tray elements in Revit.
 - 3.	Control and Inventory:
 Use the data from Excel to accurately control the lengths and inventory of cable trays, ensuring this information is up-to-date.
+
+This software has been used in several projects but data has been deleted for Copyright reasons.
+We can include your project and customize it to your needs.
