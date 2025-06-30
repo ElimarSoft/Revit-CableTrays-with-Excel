@@ -1,0 +1,243 @@
+{
+  "Uuid": "7e3961a9-66bb-4fa3-84b8-31f06c86fd7c",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "DisplayId06",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\n\r\nfrom Autodesk.Revit.DB import ElementId, XYZ, TextNote, TextNoteType, FilteredElementCollector, BuiltInCategory, LocationPoint, LocationCurve\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\nfrom Autodesk.Revit.DB import Color\r\n\r\n# Get the current document and UIDocument\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\nuidoc = uiapp.ActiveUIDocument\r\n\r\nmarkStr = IN[1]\r\ntextSize = IN[2]/25.4/12\r\n\r\ndef GetParam(element, name):\r\n    par_val = ''\r\n    parType = element.LookupParameter(name)    \r\n    if parType:    \r\n        par_val = parType.AsString()\r\n    return par_val\r\n# Collect CableTray elements\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTray).WhereElementIsNotElementType().ToElements()\r\n\r\n# Collect CableTrayFitting elements\r\ncable_tray_fittings = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTrayFitting).WhereElementIsNotElementType().ToElements()\r\n\r\n# Combine the collections\r\n\r\nfor element in list(cable_trays):\r\n\r\n    element_mark = GetParam(element,markStr)\r\n    element_id = element.Id\r\n    element_location = None\r\n    if isinstance(element.Location, LocationPoint):\r\n        element_location = element.Location.Point\r\n    elif isinstance(element.Location, LocationCurve):\r\n        #element_location = element.Location.Curve.GetEndPoint(0)  # Get the start point of the curve\r\n        element_location = element.Location.Curve.Evaluate(0.5, True)\r\n\r\n    # Ensure element_location is set\r\n    if element_location:\r\n        text_note_position = element_location # Adjust the offset as needed\r\n        text_note_type = FilteredElementCollector(doc).OfClass(TextNoteType).FirstElement()\r\n        TransactionManager.Instance.EnsureInTransaction(doc)\r\n        text = str(element.Id)+':' + str(element_mark)\r\n        text_note = TextNote.Create(doc, doc.ActiveView.Id, text_note_position, text, text_note_type.Id)\r\n        text_note_type = text_note.TextNoteType\r\n        text_note_type.LookupParameter(\"Text Size\").Set(textSize)\r\n        text_note_type.LookupParameter(\"Color\").Set(0x0000ff)\r\n        \r\n        TransactionManager.Instance.TransactionTaskDone()\r\n\r\n\r\nfor element in list(cable_tray_fittings):\r\n    element_mark = GetParam(element,markStr)\r\n    element_id = element.Id\r\n    element_location = None\r\n    if isinstance(element.Location, LocationPoint):\r\n        element_location = element.Location.Point\r\n    elif isinstance(element.Location, LocationCurve):\r\n        #element_location = element.Location.Curve.GetEndPoint(0)  # Get the start point of the curve\r\n        element_location = element.Location.Curve.Evaluate(0.5, True)\r\n\r\n    # Ensure element_location is set\r\n    if element_location:\r\n        text_note_position = element_location # Adjust the offset as needed\r\n        text_note_type = FilteredElementCollector(doc).OfClass(TextNoteType).FirstElement()\r\n        TransactionManager.Instance.EnsureInTransaction(doc)\r\n        \r\n        text = str(element.Id)+':' + str(element_mark)\r\n        text_note = TextNote.Create(doc, doc.ActiveView.Id, text_note_position, text, text_note_type.Id)\r\n        TransactionManager.Instance.TransactionTaskDone()\r\n\r\n\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "b275ddd39d634ce59ef84a9b38c4f888",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "d3eaa428d32f4e8b8e8872f5ef703b44",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "fc8707935d944d2e9d89c08b9bc5e6e3",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "1faa8c0fa6614b988d3a752779913bba",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "5a42dc4e3e644dcfac200060c8abf3bc",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
+      "NumberType": "Integer",
+      "MaximumValue": 100,
+      "MinimumValue": 0,
+      "StepValue": 1,
+      "Id": "40017893941c4c50972cf313e1c47938",
+      "NodeType": "NumberInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "707ce0e11b2043f2b10f034ba444f1e8",
+          "Name": "",
+          "Description": "Int64",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Produces integer values",
+      "InputValue": 35
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "a8aa39feee3d48d688bd79444b5a9706",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "2dad12b59e7d4d68af8522ff0b6c1e78",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"\";"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "a2a1f58617a8426ba259e072d2989bbc",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "1b1a90507871422ca605738bb7824582",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "0.26;"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "707ce0e11b2043f2b10f034ba444f1e8",
+      "End": "d3eaa428d32f4e8b8e8872f5ef703b44",
+      "Id": "d9c6c7d124374905acd1d58a46e27c35",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "2dad12b59e7d4d68af8522ff0b6c1e78",
+      "End": "fc8707935d944d2e9d89c08b9bc5e6e3",
+      "Id": "06564ac8ae144d15aa75256ded100d98",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "1b1a90507871422ca605738bb7824582",
+      "End": "1faa8c0fa6614b988d3a752779913bba",
+      "Id": "8a879f367bc64defa773bf9e968dbd1b",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "EnableLegacyPolyCurveBehavior": true,
+  "Thumbnail": null,
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "3.3",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "8.2",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.3.0.6316",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "b275ddd39d634ce59ef84a9b38c4f888",
+        "Name": "Python Script",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 554.5,
+        "Y": 161.5
+      },
+      {
+        "Id": "40017893941c4c50972cf313e1c47938",
+        "Name": "Integer Slider",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 134.53455723542118,
+        "Y": 140.4460043196544
+      },
+      {
+        "Id": "a8aa39feee3d48d688bd79444b5a9706",
+        "Name": "Mark",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 159.61138539885064,
+        "Y": 281.31109229796255
+      },
+      {
+        "Id": "a2a1f58617a8426ba259e072d2989bbc",
+        "Name": "Text Size",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 182.0000000000001,
+        "Y": 451.2610304066874
+      }
+    ],
+    "Annotations": [],
+    "X": -99.91113574411156,
+    "Y": 123.63085455885374,
+    "Zoom": 1.0606077223602068
+  }
+}
