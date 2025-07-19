@@ -4,7 +4,7 @@ Const MacroName3 = "SendDataMod"
 
 const MacroExt = ".bas"
 Const MacroPath = "C:\Users\micro\Documents\"
-Const WorkbookName = "RevitMacros02"
+Const WorkbookName = "RevitMacros02.xlsx"
 
 function getLastName (directoryPath, baseName, extName)
 
