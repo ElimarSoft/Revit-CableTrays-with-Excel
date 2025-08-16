@@ -1,0 +1,6 @@
+These Shorcuts must be added to Revit
+Type ks in Revit interface to program or import xml file
+
+"is" Select by ID
+"id" ID's of selection
+"dp" Custom Dynamo Player shortcut
