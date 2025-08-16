@@ -232,8 +232,8 @@ Private Sub ShowOnExcel()
                         Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 44)): pos = pos + 1 'Level
                         Target.Offset(index + 1, pos).Value = (InStr(Data(1, 6), "Cable Tray") = 0): pos = pos + 1 'Fitting
                         Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 2)): pos = pos + 1 'Mark
-                        Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 3)): pos = pos + 1 'Service
-                        'Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 4)): pos = pos + 1 ' Comments
+                        'Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 3)): pos = pos + 1 'Comments
+                        Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 4)): pos = pos + 1 'Service
                         Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 9)): pos = pos + 1 'Width
                         Target.Offset(index + 1, pos).Value = "'" + CStr(Data(1, 10)): pos = pos + 1 'Height
                                                 
