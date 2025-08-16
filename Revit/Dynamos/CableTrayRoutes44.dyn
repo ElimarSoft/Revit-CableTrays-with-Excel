@@ -1,0 +1,473 @@
+{
+  "Uuid": "a7e545ce-8714-4da5-a064-f2250a134591",
+  "IsCustomNode": false,
+  "Description": "",
+  "Name": "CableTrayRoutes44",
+  "ElementResolver": {
+    "ResolutionMap": {
+      "DraftingView": {
+        "Key": "Revit.Elements.Views.DraftingView",
+        "Value": "RevitNodes.dll"
+      },
+      "SketchPlane": {
+        "Key": "Revit.Elements.SketchPlane",
+        "Value": "RevitNodes.dll"
+      },
+      "Category": {
+        "Key": "Revit.Elements.Category",
+        "Value": "RevitNodes.dll"
+      },
+      "Family": {
+        "Key": "Revit.Elements.Family",
+        "Value": "RevitNodes.dll"
+      },
+      "Element": {
+        "Key": "Revit.Elements.Element",
+        "Value": "RevitNodes.dll"
+      },
+      "List.Parameters": {
+        "Key": "List",
+        "Value": "BuiltIn.ds"
+      }
+    }
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "7831cf53382342a69ff5ad5ff9fb784a",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "34c46f76b7af4bfcbe337e57cc45114c",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "e84167cea2e94504947a623fbf06746a",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6972a985d9aa4f29a26105b2634df4ce",
+          "Name": "",
+          "Description": "Value of expression at line 3",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "837b7692bdde4a3d97ceadef9ebeae16",
+          "Name": "",
+          "Description": "Value of expression at line 4",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"C:\\\\Revit\\\\Excel\\\\RevitMacros02.xlsx\";\n\"Routes\";\n0;\n1;"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nimport math\r\nclr.AddReference('RevitAPI')\r\nclr.AddReference('RevitServices')\r\n\r\nfrom Autodesk.Revit.DB import *\r\nfrom RevitServices.Persistence import DocumentManager\r\n\r\nfittingParams = ['Bend Radius','Tray Length','Tray Width',\r\n                'Tray Height', 'Tray Height 1', 'Tray Height 2',\r\n                'Length 1','Length 3','Tray Width 1','Tray Width 2','Tray Width 3']\r\n\r\nextraParams = ['Level']\r\n\r\ntitles = ['Id', 'Mark', 'Comments', 'Service Type', 'TypeId', 'TypeName', 'FamilyName', \r\n          'Length', 'Width', 'Height',\r\n          'Ref','N1','N2','N3','N4','P1','P2','P3','P4',\r\n          'X1','Y1','Z1','X2','Y2','Z2','X3','Y3','Z3','X4','Y4','Z4', 'Angle'] + fittingParams + extraParams\r\n\r\nC0 = titles.IndexOf('N1')\r\nC1 = titles.IndexOf('X1')\r\n\r\ntol = 30.0\r\nf = 25.4*12\r\nfd = 180/math.pi\r\n\r\ncps = [titles]\r\n\r\ndef dim(val1):\r\n    return round(val1*f,3)\r\n\r\ndef log(message):\r\n    with open(\"C:\\\\revit\\\\logs\\log01.txt\", \"a\") as log_file:\r\n        log_file.write(message + \"\\n\")\r\n\r\ndef checkPoints(pt1,pt2,p1,p2):\r\n    if ((cps[pt1][p1]) == '') or (cps[pt2][p2] == ''):\r\n        return False\r\n    #return (cps[pt1][p1] == cps[pt2][p2]) and (cps[pt1][p1+1] == cps[pt2][p2+1]) and (cps[pt1][p1+2] == cps[pt2][p2+2])\r\n    return abs(cps[pt1][p1] - cps[pt2][p2]) < tol and abs(cps[pt1][p1+1] - cps[pt2][p2+1]) < tol and abs(cps[pt1][p1+2] - cps[pt2][p2+2]) < tol\r\n\r\ndef checkConnections():\r\n    lCps = len(cps)\r\n    for ptr1  in range(1, lCps-1):\r\n        for ptr2 in range(ptr1 + 1,lCps):        \r\n            for r in range(4):\r\n                for s in range(4):\r\n                    if checkPoints(ptr1, ptr2, C1 + (r*3), C1 + (s*3)):\r\n                        cps[ptr1][C0 + r] = ptr2\r\n                        cps[ptr2][C0 + s] = ptr1\r\n \r\n# Function to get the coordinates of connection points\r\ndef get_tray_connectors(elem):\r\n    connector_manager = elem.ConnectorManager\r\n    typeData = get_cable_tray_type(elem)\r\n    params =get_cable_tray_params(elem)\r\n    paramData = [dim(params[\"Length\"]),dim(params[\"Width\"]),dim(params[\"Height\"])]\r\n    customData = [params[\"Mark\"], params[\"Comments\"], params[\"Service Type\"]]\r\n    extraData = [doc.GetElement(elem.LevelId).Name]\r\n    \r\n    connection_points = [elem.Id]\r\n    connection_points.extend(customData)\r\n    connection_points.extend(typeData)\r\n    connection_points.extend(paramData)\r\n    connection_points.extend(['']*9)\r\n    connNum = 0\r\n    for cn in connector_manager.Connectors:\r\n        connection_points.extend([dim(cn.Origin.X),dim(cn.Origin.Y),dim(cn.Origin.Z)])\r\n        connNum +=1\r\n    \r\n    if (connNum <4):\r\n        connection_points.extend(['']*3*(4-connNum))\r\n\r\n    connection_points.extend(['']*(len(fittingParams)+1))\r\n    connection_points.extend(extraData)    \r\n    \r\n    return [connection_points]      \r\n\r\ndef get_fitting_connectors(elem):\r\n    typeData = get_cable_tray_type(elem)\r\n    params =get_cable_tray_params(elem)\r\n    extraData = [doc.GetElement(elem.LevelId).Name]\r\n    dist1 = 0\r\n    dist2 = 0\r\n    dist3 = 0\r\n    orgs = []\r\n    \r\n    def shortConnectors(cn):\r\n        tol = 1\r\n        for c in cn:\r\n            orgs.append(c.Origin)\r\n\r\n        if (typeData[2].endswith('Horizontal Tee')):\r\n\t\t\treturn getAligned(orgs)\r\n\r\n        if (typeData[2].endswith('Horizontal Tee')):\r\n            length1 = getDim('Length 1')\r\n            getDist(orgs)\r\n            if abs(dist1-length1) < tol:\r\n                #log(\"0,1,2\")\r\n                return [orgs[0], orgs[1], orgs[2]]\r\n            elif abs(dist2-length1) < tol:\r\n                #log(\"0,2,1\")\r\n                return [orgs[0], orgs[2], orgs[1]]\r\n            elif abs(dist3-length1) < tol:\r\n                #log(\"1,2,0\")\r\n                return [orgs[1], orgs[2], orgs[0]]\r\n        return orgs\r\n        \r\n    def getAligned(orgs):\r\n        for i1, i2, i3 in [(0, 1, 2), (0, 2, 1), (1, 2, 0)]:\r\n            if orgs[i1].X == orgs[i2].X:\r\n                return [orgs[i1], orgs[i2], orgs[i3]] if orgs[i1].Y < orgs[i2].Y else [orgs[i2], orgs[i1], orgs[i3]]\r\n            if orgs[i1].Y == orgs[i2].Y:\r\n                return [orgs[i1], orgs[i2], orgs[i3]] if orgs[i1].X < orgs[i2].X else [orgs[i2], orgs[i1], orgs[i3]]\r\n        return orgs        \r\n    \r\n    def getDim(parName):\r\n        return round(float(params.get(parName,0)*f),1)\r\n\r\n    def getAngle(parName):\r\n        return round(float(params.get(parName,0)*fd),1)\r\n    \r\n    def getAngleRad(parName):\r\n        return float(params.get(parName,0))\r\n\r\n    def getLength():\r\n        lVal = 0\r\n        TypeVal = typeData[2]\r\n        if TypeVal.endswith('Horizontal Bend'):\r\n            lVal = (getDim('Bend Radius')+getDim('Tray Width')/2)*getAngleRad('Angle')\r\n        elif TypeVal.endswith('Horizontal Cross'):\r\n            #lVal = max(getDim('Length 1'),getDim('Length 3'))\r\n            lVal = getDist(orgs)\r\n        elif TypeVal.endswith('Horizontal Tee'):\r\n            lVal = getDist(orgs)\r\n            #lVal = max(getDim('Length 1'),getDim('Length 3'))\r\n        elif TypeVal.endswith('Vertical Inside Bend'):\r\n            lVal = (getDim('Bend Radius')+getDim('Tray Height')/2)*getAngleRad('Angle')\r\n        elif TypeVal.endswith('Vertical Outside Bend'):\r\n            lVal = (getDim('Bend Radius')+getDim('Tray Height')/2)*getAngleRad('Angle')\r\n        elif TypeVal.endswith('Reducer'):\r\n            lVal = getDim('Tray Length')\r\n        else:\r\n            lVal =0\r\n        return round(lVal,3)\r\n\r\n    def getFittingParams():\r\n        fittingData = []\r\n        for par in fittingParams:\r\n            fittingData.append(getDim(par))\r\n        return fittingData\r\n\r\n    def getDist(orgs):\r\n        dist1 = orgs[0].DistanceTo(orgs[1])*f\r\n        dist2 = orgs[0].DistanceTo(orgs[2])*f\r\n        dist3 = orgs[1].DistanceTo(orgs[2])*f\r\n        distMax = max(dist1, dist2, dist3)\r\n        return distMax\r\n        \r\n    connector_manager = elem.MEPModel.ConnectorManager\r\n    connNum = 0         \r\n    orgs = shortConnectors(connector_manager.Connectors)\r\n    paramData =[getLength(),'','']\r\n    customData = [params[\"Mark\"] , params[\"Comments\"], params[\"Service Type\"]]\r\n    fittingData = [ getAngle(\"Angle\")] + getFittingParams()\r\n    connection_points = [elem.Id]\r\n    connection_points.extend(customData)\r\n    connection_points.extend(typeData)\r\n    connection_points.extend(paramData)\r\n    connection_points.extend(['']*9)\r\n    \r\n    if hasattr(elem, 'MEPModel') and elem.MEPModel:\r\n        for org in orgs:\r\n            connection_points.extend([dim(org.X),dim(org.Y),dim(org.Z)])\r\n            connNum +=1\r\n        if (connNum <4):\r\n            connection_points.extend(['']*3*(4-connNum))  \r\n           \r\n    connection_points.extend(fittingData)\r\n    connection_points.extend(extraData)\r\n    return [connection_points]\r\n\r\ndef get_parameter_value(element, built_in_param):\r\n    param = element.get_Parameter(built_in_param)\r\n    if param:\r\n        return param.AsString() or param.AsDouble() or param.AsInteger()\r\n    return None\r\n\r\ndef get_cable_tray_params(cable_tray):\r\n    params = {}\r\n    for param in cable_tray.Parameters:\r\n        param_name = param.Definition.Name\r\n        if param.StorageType == StorageType.String:\r\n            param_value = param.AsString()\r\n        elif param.StorageType == StorageType.Double:\r\n            param_value = param.AsDouble()\r\n        elif param.StorageType == StorageType.Integer:\r\n            param_value = param.AsInteger()\r\n        elif param.StorageType == StorageType.ElementId:\r\n            param_value = param.AsElementId().IntegerValue\r\n        else:\r\n            param_value = None\r\n        params[param_name] = param_value\r\n    return params\r\n\r\ndef get_cable_tray_type(element):\r\n    # Get the type ID of the element\r\n    type_id = element.GetTypeId()\r\n    # Get the element type using the type ID\r\n    element_type = doc.GetElement(type_id)\r\n    # Get the type name\r\n    type_name = element_type.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_NAME).AsString()\r\n    family_name = element_type.get_Parameter(BuiltInParameter.ALL_MODEL_FAMILY_NAME).AsString()\r\n\r\n    return [type_id, type_name, family_name]\r\n\r\nf = 25.4*12\r\n\r\n# Get the current Revit document\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\n\r\n# Collect all CableTray elements\r\ncable_trays = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTray).WhereElementIsNotElementType().ToElements()\r\ncable_tray_fittings = FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_CableTrayFitting).WhereElementIsNotElementType().ToElements()\r\n\r\nfor tray in cable_trays:\r\n    connection_points = get_tray_connectors(tray)\r\n    cps.extend(connection_points)\r\n    #log(str(len(connection_points[0]))+\"\\n\")\r\n\r\n\r\nfor tray in cable_tray_fittings:\r\n    connection_points = get_fitting_connectors(tray)\r\n    cps.extend(connection_points)\r\n    #log(str(len(connection_points[0]))+\"\\n\")\r\n\r\nref1 = 1\r\nfor cp1 in cps[1:]:\r\n    cp1[C0-1] = ref1\r\n    ref1 = ref1 + 1\r\n\r\ncheckConnections()\r\n\r\nOUT = cps\r\n\r\n",
+      "Engine": "IronPython2",
+      "VariableInputPorts": true,
+      "Id": "ebeb9343cba940c3bcc980b0f35d7ad0",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "69acf142daa1473ca3bda0490468e641",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "27bd3b12801e451db8eb384047f5f8de",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.IntegerSlider, CoreNodeModels",
+      "NumberType": "Integer",
+      "MaximumValue": 100,
+      "MinimumValue": 0,
+      "StepValue": 1,
+      "Id": "4e32ba6cd3d04d4786b94994955d89b8",
+      "NodeType": "NumberInputNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "6410bf1ad7d74ce3b55b01bf7895b3de",
+          "Name": "",
+          "Description": "Int64",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Produces integer values",
+      "InputValue": 69
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "Id": "c5f7babf705c49db8fefb503c9d9107d",
+      "NodeType": "FunctionNode",
+      "Inputs": [
+        {
+          "Id": "052b1a6b511642ddab5b2c5e7159e494",
+          "Name": "filePath",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "6234fc7f039c4392ba81d604ae905677",
+          "Name": "sheetName",
+          "Description": "string",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "7dac0a6d43aa435fa39d6040ab120932",
+          "Name": "startRow",
+          "Description": "int",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "96547784409e4578b0c15b4ea6aee9e1",
+          "Name": "startColumn",
+          "Description": "int",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ad547991a87d40c6874da63ec8e84d8a",
+          "Name": "data",
+          "Description": "var[][]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "792e48fccff94e66bda0401637cbc19b",
+          "Name": "overWrite",
+          "Description": "bool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "679fdf7a3c934319bf470347e69b34a9",
+          "Name": "writeAsString",
+          "Description": "bool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "fb24501cfedf436fb25ea11e392b5858",
+          "Name": "var[][]",
+          "Description": "var[][]",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "FunctionSignature": "DSOffice.Data.ExportToExcel@string,string,int,int,var[][],bool,bool",
+      "Replication": "Auto",
+      "Description": "Data.ExportToExcel (filePath: string, sheetName: string, startRow: int, startColumn: int, data: var[][], overWrite: bool = false, writeAsString: bool = false): var[][]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "WatchWidth": 50.0,
+      "WatchHeight": 200.0,
+      "Id": "a49647ae5ffa45aeb23dce9a5f490359",
+      "NodeType": "ExtensionNode",
+      "Inputs": [
+        {
+          "Id": "f0b3ffc63a884a4aacc16a13b69c11a0",
+          "Name": "",
+          "Description": "Node to show output from",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "677e96bef99b4bc7bd500dc64ee79ad2",
+          "Name": "",
+          "Description": "Node output",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualizes a node's output"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Function, DynamoCore",
+      "FunctionSignature": "ffe98fba-5a17-43a1-b283-cfcb64ef7661",
+      "FunctionType": "Graph",
+      "Id": "e0b1cbc5bf70476baf2e9889c914beff",
+      "NodeType": "FunctionNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "18e88c62f3394501bbf3d3986ff1e6b3",
+          "Name": "ExcelFilePath",
+          "Description": "return value",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": ""
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e84167cea2e94504947a623fbf06746a",
+      "End": "6234fc7f039c4392ba81d604ae905677",
+      "Id": "bd2d46304acc4f8eba9c96923c90888d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6972a985d9aa4f29a26105b2634df4ce",
+      "End": "96547784409e4578b0c15b4ea6aee9e1",
+      "Id": "a155ee202dd64b0cbc3923ca5b45eb1d",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6972a985d9aa4f29a26105b2634df4ce",
+      "End": "7dac0a6d43aa435fa39d6040ab120932",
+      "Id": "fe8d7c2af54348418fa6dd5fa20a54dc",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6972a985d9aa4f29a26105b2634df4ce",
+      "End": "679fdf7a3c934319bf470347e69b34a9",
+      "Id": "b90b29cf5c624475a789c9a1c277e1e5",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "837b7692bdde4a3d97ceadef9ebeae16",
+      "End": "792e48fccff94e66bda0401637cbc19b",
+      "Id": "e5ab85490ff94e61af88763354dcbfd4",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "27bd3b12801e451db8eb384047f5f8de",
+      "End": "ad547991a87d40c6874da63ec8e84d8a",
+      "Id": "16bd63a7c6d94240a765019894aa64f7",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "27bd3b12801e451db8eb384047f5f8de",
+      "End": "f0b3ffc63a884a4aacc16a13b69c11a0",
+      "Id": "816fb33d699b4cd9874a5be0a6ffdb82",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "6410bf1ad7d74ce3b55b01bf7895b3de",
+      "End": "69acf142daa1473ca3bda0490468e641",
+      "Id": "583fd6fc44254e6da6da00f65edd3ab6",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "18e88c62f3394501bbf3d3986ff1e6b3",
+      "End": "052b1a6b511642ddab5b2c5e7159e494",
+      "Id": "c17a5c42a46845aca541363790dbf100",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [
+    "ffe98fba-5a17-43a1-b283-cfcb64ef7661"
+  ],
+  "NodeLibraryDependencies": [
+    {
+      "Name": "GetExcelFiles.dyf",
+      "ReferenceType": "DYFFile",
+      "Nodes": [
+        "e0b1cbc5bf70476baf2e9889c914beff"
+      ]
+    },
+    {
+      "Name": "RevitMacros02.xlsx",
+      "ReferenceType": "External",
+      "Nodes": [
+        "7831cf53382342a69ff5ad5ff9fb784a"
+      ]
+    },
+    {
+      "Name": "RevitMacros02.xlsx",
+      "ReferenceType": "External",
+      "Nodes": [
+        "e0b1cbc5bf70476baf2e9889c914beff"
+      ]
+    }
+  ],
+  "EnableLegacyPolyCurveBehavior": true,
+  "Thumbnail": "",
+  "GraphDocumentationURL": null,
+  "ExtensionWorkspaceData": [
+    {
+      "ExtensionGuid": "28992e1d-abb9-417f-8b1b-05e053bee670",
+      "Name": "Properties",
+      "Version": "3.3",
+      "Data": {}
+    },
+    {
+      "ExtensionGuid": "DFBD9CC0-DB40-457A-939E-8C8555555A9D",
+      "Name": "Generative Design",
+      "Version": "8.2",
+      "Data": {}
+    }
+  ],
+  "Author": "None provided",
+  "Linting": {
+    "activeLinter": "None",
+    "activeLinterId": "7b75fb44-43fd-4631-a878-29f4d5d8399a",
+    "warningCount": 0,
+    "errorCount": 0
+  },
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.3.0.6316",
+      "RunType": "Manual",
+      "RunPeriod": "100"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "7831cf53382342a69ff5ad5ff9fb784a",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": false,
+        "X": -8845.828478259447,
+        "Y": -1603.9464499845471
+      },
+      {
+        "Id": "ebeb9343cba940c3bcc980b0f35d7ad0",
+        "Name": "Connection Points",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -8213.957764168614,
+        "Y": -1848.8133384758478
+      },
+      {
+        "Id": "4e32ba6cd3d04d4786b94994955d89b8",
+        "Name": "Integer Slider",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -8700.086700047525,
+        "Y": -1804.2397114587216
+      },
+      {
+        "Id": "c5f7babf705c49db8fefb503c9d9107d",
+        "Name": "Data.ExportToExcel",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -7768.578471288566,
+        "Y": -1710.0183231820636
+      },
+      {
+        "Id": "a49647ae5ffa45aeb23dce9a5f490359",
+        "Name": "Watch",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": false,
+        "X": -7765.658007948057,
+        "Y": -2024.4468363901565
+      },
+      {
+        "Id": "e0b1cbc5bf70476baf2e9889c914beff",
+        "Name": "GetExcelFiles",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": -8432.497803174576,
+        "Y": -1323.8888183465986
+      }
+    ],
+    "Annotations": [],
+    "X": 5059.758040860619,
+    "Y": 1333.6999505003648,
+    "Zoom": 0.5569211044377234
+  }
+}
