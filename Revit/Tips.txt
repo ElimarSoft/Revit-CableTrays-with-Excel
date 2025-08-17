@@ -1,0 +1,1 @@
+When programming vertical trays in Excel give a small advance (0.1%) in the running axis to determine the tray roration about its axis.
