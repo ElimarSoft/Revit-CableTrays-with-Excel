@@ -1,3 +1,10 @@
-Vertical Trays have no defined horizontal orientation unless connected to a fitting or having a minimum inclination.
-When programming vertical trays in Excel give a small advance (0.1%) in the layout direction to determine the tray roration about its axis.
-After Revit startup Dynamo Player Execution takes time to load. This can cause macros to delay too much or fail in the first execution.
+🧰 Key Tips Recap
+Vertical Tray Orientation Since vertical trays lack a defined horizontal orientation, they can behave unpredictably unless:
+Connected to a fitting
+Given a slight inclination
+Excel Programming Workaround To stabilize tray rotation in Excel-based layout scripts:
+Apply a 0.1% advance in the layout direction
+This tiny nudge helps Revit determine the tray’s axis rotation
+Dynamo Player Load Delay After launching Revit:
+Dynamo Player may take time to initialize, causing macro execution delays or failures
+First-run macros might time out or misfire due to this lag
