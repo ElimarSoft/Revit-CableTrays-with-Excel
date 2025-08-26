@@ -1,0 +1,188 @@
+{
+  "Uuid": "ffe98fba-5a17-43a1-b283-cfcb64ef7661",
+  "IsCustomNode": true,
+  "Category": "ELimar",
+  "Description": "",
+  "Name": "GetExcelFiles",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "Id": "65215cc7365b49869f400ad89b024028",
+      "NodeType": "CodeBlockNode",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "07bed9a9d5404535ac083e62602caca9",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "849f8d951284440e8a5f0d0654db10f1",
+          "Name": "",
+          "Description": "Value of expression at line 2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly",
+      "Code": "\"C:\\\\revit\\\\excel\";\n\"RevitMacros??\";"
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "Code": "import clr\r\nclr.AddReference(\"System\")\r\nfrom System.IO import Directory\r\n\r\ndirectory = IN[0]\r\nmask = IN[1]\r\nfiles = Directory.GetFiles(directory, mask + \".xlsx\")\r\n\r\n#look for macro file\r\nif len(files) == 0:\r\n\tfiles = Directory.GetFiles(directory, mask + \".xlsm\")\r\n\r\n#Get the last file in the list\r\nif len(files) > 1:\r\n\tOUT = files[-1]\r\nelse:\r\n    OUT = files[0]\r\n",
+      "Engine": "CPython3",
+      "VariableInputPorts": true,
+      "Id": "885a7ba01219410d9d2a696d79d65b76",
+      "NodeType": "PythonScriptNode",
+      "Inputs": [
+        {
+          "Id": "f04c8c4388264593a477345ba8ef9770",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "cf282720680b40479ac53adecbc3068e",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b19520d991874c1cbb55a433cd2c0bda",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded Python script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CustomNodes.Output, DynamoCore",
+      "ElementResolver": null,
+      "Symbol": "ExcelFilePath",
+      "Id": "909a99a2565f4c7baa98b7fab378e8d6",
+      "NodeType": "OutputNode",
+      "Inputs": [
+        {
+          "Id": "2727193a2d2e4c258f79a22b921cdeda",
+          "Name": "",
+          "Description": "Output Data",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [],
+      "Replication": "Disabled",
+      "Description": "A function output, use with custom nodes"
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "07bed9a9d5404535ac083e62602caca9",
+      "End": "f04c8c4388264593a477345ba8ef9770",
+      "Id": "565e3302e4444e55b65389033dc0edb0",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "849f8d951284440e8a5f0d0654db10f1",
+      "End": "cf282720680b40479ac53adecbc3068e",
+      "Id": "ff71aa0b8c4e439386d393e65544c03c",
+      "IsHidden": "False"
+    },
+    {
+      "Start": "b19520d991874c1cbb55a433cd2c0bda",
+      "End": "2727193a2d2e4c258f79a22b921cdeda",
+      "Id": "943cac18341c4a6da1fabb12a1d6f214",
+      "IsHidden": "False"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Author": "None provided",
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": false,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "3.5.2.8914",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "_Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "ConnectorPins": [],
+    "NodeViews": [
+      {
+        "Id": "65215cc7365b49869f400ad89b024028",
+        "Name": "Code Block",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 213.0000000000009,
+        "Y": 141.85275714788816
+      },
+      {
+        "Id": "885a7ba01219410d9d2a696d79d65b76",
+        "Name": "Get Excel File Name",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 541.7314687033859,
+        "Y": 138.0
+      },
+      {
+        "Id": "909a99a2565f4c7baa98b7fab378e8d6",
+        "Name": "Output",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "ShowGeometry": true,
+        "X": 818.5,
+        "Y": 136.0
+      }
+    ],
+    "Annotations": [],
+    "X": 113.83718915660518,
+    "Y": 187.078392560829,
+    "Zoom": 0.6748316584268647
+  }
+}
