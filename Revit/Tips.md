@@ -19,4 +19,5 @@
   - **Dynamo Player may take time to initialize**, causing macro execution delays or failures
   - First-run macros might time out or misfire due to this lag
 
+- **Program Keyboard Shortcuts
 ---
