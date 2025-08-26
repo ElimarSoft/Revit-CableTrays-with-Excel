@@ -20,4 +20,5 @@
   - First-run macros might time out or misfire due to this lag
 
 - **Program Keyboard Shortcuts**
+
 ---
