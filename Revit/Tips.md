@@ -2,7 +2,7 @@
 
 - **Revit Version**  
   - Revit 2025 ENU
-  - 2026 Under Development
+  - Revit 2026 ENU
 
 - **Vertical Tray Orientation**  
   Since vertical trays lack a defined horizontal orientation, they can behave unpredictably unless:
